@@ -1,0 +1,93 @@
+@(json: com.fasterxml.jackson.databind.JsonNode)
+
+@main("Infomaze") {
+    <div >
+    @helper.form(routes.PostController.post, 'id -> "postForm", 'class->"pure-form pure-form-aligned") {
+		
+		<div class="pure-controls"><label></label>
+		        <label id="errormessage" style="font-weight:bold">@json.get("error")</label>
+		    </div>
+		<fieldset>
+	        <div class="pure-control-group">
+	            <label for="posttype">Post Type</label>
+	            <select name="postType" id="posttypeselect">
+	            	<option value="feed">Message<option>
+            		<option value="event">Event<option>
+            		<option value="photo">File<option>
+            	</select>
+	        </div>
+	
+	        <div class="pure-control-group">
+	            <label for="message">Message</label>
+	            <textarea class="pure-input-1-2" name="message" placeholder="Message or Event name or Status"  required></textarea>
+	        </div>
+	
+			<div class="pure-control-group">
+				<label for="option-one" class="pure-radio">
+			        Publish type
+			    </label>
+			    <input id="option-one" type="radio" name="optionsRadios" value="option1" checked>
+			        Publish immediately<br>
+				<label for="option-two" class="pure-radio">
+			        
+			    </label>
+			    <input id="option-two" type="radio" name="optionsRadios" value="option2" >
+			        Don't publish<br>
+			
+			    <label for="option-three" class="pure-radio"></label>
+			        <input id="option-three" type="radio" name="optionsRadios" value="option3">
+			        Publish at 
+			        <input id="scheduledate" name="scheduledate" type="text" placeholder="Specify date" disabled>
+			       <select id="scheduletime" name="scheduletime" >
+			       		<script>
+						       		function zeroFill( number, width ) {
+									  width -= number.toString().length;
+									  if ( width > 0 )
+									  {
+									    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+									  }
+									  return number + ""; // always return a string
+									}
+			       			var htmlstr = "";
+			       			for(var i=0;i<24;i++) {
+			       				var hrVal = zeroFill(i, 2);
+			       				htmlstr += "<option value='"+hrVal + ":00'>"+hrVal+":00</option>";
+			       				htmlstr += "<option value='"+hrVal + ":30'>"+hrVal+":30</option>";
+			       			}
+			       			document.write(htmlstr);
+			       		</script>
+						
+					</select>
+			
+			</div>
+			
+	        <!-- <div class="pure-control-group">
+	            <label for="password">Expires</label>
+	
+	            <input id="expirydate" name="expirydate" type="text" placeholder="Never">
+	        </div>-->
+	
+			<div class="pure-control-group" hidden id="eventschedule">
+	            <label for="eventschedule">Event Schedule</label>
+	
+	            <input id="startdate" name="startdate" type="text" placeholder="Start Date"> to <input id="enddate" name="enddate" type="text" placeholder="End Date">
+	        </div>    
+	        
+	        <div class="pure-control-group" hidden id="filepicker">
+	            <label for="password">Photo or Video File</label>
+				<input id="filename" name="filename" type="text" hidden>
+	            <input id="filedata" name="filedata" type="file" placeholder="Choose file">
+	        </div>     
+	
+	        <div class="pure-controls">
+	           
+	
+	            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+	        </div>
+	    </fieldset>
+       
+   	}
+    </div>
+    <script src="@routes.Assets.at("javascripts/post.js")" type="text/javascript"></script>
+
+}

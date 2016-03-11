@@ -1,0 +1,13 @@
+@(json: com.fasterxml.jackson.databind.JsonNode)
+
+@main("Infomaze") {
+    <div id="fb-root">
+        <p>
+            <b>Posts:</b> @json.get("total_likes")
+        </p>
+        <p>
+            <b>Email:</b> @json.get("total_likes")
+        </p>
+
+    </div>
+}

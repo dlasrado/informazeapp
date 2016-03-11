@@ -1,0 +1,13 @@
+New log file opened at Sat Mar 05 01:05:49 SGT 2016 by 4592@SGLPDSPNY52
+Taking next connection to: 54520
+New client attempting to connect on port: 54521-54520
+  Address = /192.168.1.4:54520
+This client on port 54521 has uuid 56f4658d-476a-4959-bbe7-4ce1dd200cab configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-56f4658d-476a-4959-bbe7-4ce1dd200cab
+Taking next connection to: 54520
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 4592@SGLPDSPNY52 logs at Sat Mar 05 01:08:52 SGT 2016, goodbye.

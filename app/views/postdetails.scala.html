@@ -1,0 +1,30 @@
+@(post: com.restfb.types.Post)
+
+@main("Infomaze") {
+
+	<fieldset>
+	        <div class="pure-control-group">
+	            <label for="posttype">Post Id</label>
+	            <span>@post.getId()</span>
+	            <label for="posttype">Post Id</label>
+	            <span>@post.getId()</span>
+	         </div>
+	         <div class="pure-control-group">
+	            <label for="posttype">Message</label>
+	            <span>@post.getMessage()</span>
+	            
+	         </div>
+	         <div class="pure-control-group">
+	            <label for="posttype">Total likes</label>
+	            <span>@post.getLikesCount()</span>
+	            <label for="posttype">Total shares</label>
+	            <span>@post.getSharesCount()</span>
+	         </div>
+	         <div class="pure-control-group">
+	            <label for="posttype">Total likes</label>
+	            <span>@post.getLikesCount()</span>
+	            <label for="posttype">Total shares</label>
+	            <span>@post.getSharesCount()</span>
+	         </div>
+	 </fieldset>   
+}

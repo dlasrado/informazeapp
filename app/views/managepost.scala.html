@@ -1,0 +1,40 @@
+@(json: com.fasterxml.jackson.databind.JsonNode)
+
+@main("Infomaze") {
+	<div style="text-align:right;font-weight:bold">Total @json.get("totalrecords") records found</div>
+	
+	<table class="pure-table pure-table-horizontal">
+    <thead>
+        <tr>
+            <th>Post Id</th>
+            <th>Published?</th>
+            <th>Published Date</th>
+            <th>Message</th>
+            <th>Created Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <script>
+    	var recs = @{Html(json.get("records").toString())};
+    	
+    	var htmlString = "";
+    	for(var i=0;i<recs.length;i++) {
+    		var record = JSON.parse(recs[i]);
+    		
+    		htmlString += "<tr><td><a href='/postdetails/"+record._id+"'>"+record._id+"</a></td>";
+    		htmlString += "<td>"+(record.published=='true'?'Yes':'No')+"</td>";
+    		htmlString += "<td>"+(typeof(record.published_date)!="undefined"?(new Date(record.published_date.$date)):"")+"</td>";
+    		htmlString += "<td>"+record.message+"</td>";
+    		htmlString += "<td>"+(new Date(record.created_date.$date))+"</td></tr>";
+    	}
+    	document.write(htmlString);
+    </script>
+        
+    </tbody>
+</table>
+	
+	
+	
+	
+}
