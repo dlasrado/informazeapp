@@ -26,16 +26,14 @@ public class PublishActor extends UntypedActor {
 			
 			try {
 			
-				FacebookClient facebookClient = new DefaultFacebookClient(Utility.getAppAccessToken().getAccessToken());
+				FacebookClient facebookClient = new DefaultFacebookClient(
+						Utility.getAppAccessToken().getAccessToken());
 				//facebookClient.
 				
 				Parameter parameters = Parameter.with("application", "Infomaze");
 				if (post.getMessage() != null)
 					parameters = parameters.with("message", post.getMessage());
-				if (post.getStart_time() != null)
-					parameters = parameters.with("start_time", post.getStart_time());
-				if (post.getEnd_time() != null)
-					parameters = parameters.with("end_time", post.getEnd_time());
+				
 				if (post.getName() != null)
 					parameters = parameters.with("name", post.getName());
 				

@@ -11,20 +11,10 @@
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/infomaze.png")">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.1/jquery.datetimepicker.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.1/jquery.datetimepicker.min.js"></script>
+
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="@routes.Assets.at("stylesheets/side-menu.css")">
-        <style>
-        #footer {
- clear: both;
- position: relative;
- z-index: 10;
- height: 3em;
- margin-top: -3em;
-}
-</style>
-		<script type="text/javascript" src="@routes.Assets.at("javascripts/modernizr.js")" ></script>
+    
   		
     </head>
    
@@ -51,7 +41,7 @@
 		                    <a href="@routes.PostController.managepost()" class="pure-menu-link">Manage Posts</a>
 		                </li>
 		
-		                <li class="pure-menu-item"><a href="@routes.PostController.posts()" class="pure-menu-link">Analyze</a></li>
+		                <!-- <li class="pure-menu-item"><a href="@routes.PostController.posts()" class="pure-menu-link">Analyze</a></li> -->
 		                <li class="pure-menu-item"><a href="@routes.Application.logout()" class="pure-menu-link">Logout</a></li>
 		            </ul>
 		        </div>

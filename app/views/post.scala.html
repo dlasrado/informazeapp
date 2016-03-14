@@ -2,7 +2,7 @@
 
 @main("Infomaze") {
     <div >
-    @helper.form(routes.PostController.post, 'id -> "postForm", 'class->"pure-form pure-form-aligned") {
+    @helper.form(routes.PostController.post, 'id -> "postForm", 'class->"pure-form pure-form-aligned", 'enctype->"multipart/form-data", 'method->"post") {
 		
 		<div class="pure-controls"><label></label>
 		        <label id="errormessage" style="font-weight:bold">@json.get("error")</label>
@@ -11,9 +11,10 @@
 	        <div class="pure-control-group">
 	            <label for="posttype">Post Type</label>
 	            <select name="postType" id="posttypeselect">
-	            	<option value="feed">Message<option>
-            		<option value="event">Event<option>
-            		<option value="photo">File<option>
+	            	<option value="feed">Message</option>
+            		<!-- <option value="events">Event</option> -->
+            		<option value="photos">Photo</option>
+            		<option value="videos">Video</option>
             	</select>
 	        </div>
 	

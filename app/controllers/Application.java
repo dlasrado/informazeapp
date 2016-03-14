@@ -1,10 +1,8 @@
 package controllers;
 
-import static akka.pattern.Patterns.ask;
 import static play.data.Form.form;
 
 import java.util.Date;
-import java.util.UUID;
 
 import play.Configuration;
 import play.Logger;
@@ -19,7 +17,6 @@ import play.mvc.Result;
 import play.mvc.Security;
 import util.AppConstants;
 import util.Utility;
-import views.html.index;
 import views.html.login;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -32,40 +29,59 @@ import com.restfb.FacebookClient.AccessToken;
 import com.restfb.types.Page;
 import com.restfb.types.Post;
 
-
+/**
+ * The main controller class to render general application requests 
+ * @author dlasrado
+ *
+ */
 public class Application extends Controller {
 
-	private static AccessToken appAccessToken;
 	private static Configuration config = Play.application().configuration();
-	
 	private static Lang lang = new Lang("en", "us");
 	
+	/**
+	 * The root access
+	 * 
+	 * @return
+	 */
 	@Security.Authenticated(Secured.class)
     public static Result index() {
-        return ok(index.render());
+		return ok(
+	            login.render(form(Login.class))
+	        );
     }
 
-    
+    /**
+     * Home page controller action.
+     * 
+     * @return
+     */
     @Security.Authenticated(Secured.class)
     public static Result home() {
  
     	Logger.info("Accessing home page");
     	
     	final String requestType = request().getHeader(AppConstants.X_REQUEST_TYPE);
-    	final boolean isWebClient = requestType==null?true:(AppConstants.WEB_CLIENT.equals(requestType)?true:false);
+    	//Design to handle web and restful API calls using same method
+    	final boolean isWebClient = requestType==null?true:
+    		(AppConstants.WEB_CLIENT.equals(requestType)?true:false);
         
-    	FacebookClient facebookClient = new DefaultFacebookClient(Utility.getAppAccessToken().getAccessToken());
-        Page page = facebookClient.fetchObject(config.getString("fb.page.name"), Page.class);
-        Connection<Post> posts = facebookClient.fetchConnection(config.getString("fb.page.name")+"/feed", Post.class);
+    	FacebookClient facebookClient = new DefaultFacebookClient(
+    			Utility.getAppAccessToken().getAccessToken());
+    	//Get page object
+        Page page = facebookClient.fetchObject(
+        		config.getString("fb.page.name"), Page.class);
+        //Get all recent posts
+        Connection<Post> posts = facebookClient.fetchConnection(
+        		config.getString("fb.page.name")+"/feed", Post.class);
 
-        Logger.info("Total posts : "+posts.getData().size());
-        Logger.info("Total posts : "+posts.getTotalCount());
-        Logger.info("Total likes : "+page.getLikes());
+        
         ObjectNode result = new JsonNodeFactory(true).objectNode();
         result.put("total_posts", posts.getData().size());
         result.put("total_likes", page.getLikes()==null?0L:page.getLikes());
         result.put("total_checkins", page.getCheckins()==null?0:page.getCheckins());
-        result.put("total_talking", page.getTalkingAboutCount()==null?0:page.getTalkingAboutCount());
+        result.put("total_talking", page.getTalkingAboutCount()==null?0:
+        	page.getTalkingAboutCount());
         
         if (isWebClient) {
     		return ok(views.html.posts.render((JsonNode) result));
@@ -74,35 +90,30 @@ public class Application extends Controller {
         		AppConstants.APPLICATION_JSON);
     	}
         
-        
-        //return ok(authUser.render(user.getFirstName() + " " + user.getLastName(), user.getEmail()));
-        //return ok(home.render(page.getName(), page.getWebsite()));
     }
     
-    protected static AccessToken getAppAccessToken() {
-    	
-    	//If access token expires soon, get new token
-    	if(appAccessToken == null || 
-    			(appAccessToken.getExpires() != null 
-    				&& (new Date(System.currentTimeMillis()-5000)).before(appAccessToken.getExpires()))) {
-   	
-	    	appAccessToken =
-	  			  new DefaultFacebookClient().obtainAppAccessToken(config.getString("fb.app.id"), 
-	  					  Crypto.decryptAES(config.getString("fb.app.secret")));
-    	}
-    	
-    	return appAccessToken;
-    	
-    }
     
+    /**
+     * Login page action which renders the login page
+     * 
+     * @return
+     */
     public static Result login() {
         return ok(
             login.render(form(Login.class))
         );
     }
+    
+    /**
+     * Autheicates the given username and password.
+     * Basic authentication is implemented.
+     * 
+     * @return
+     */
     public static Result authenticate() {
     	Form<Login> loginForm = form(Login.class).bindFromRequest();
     	Logger.info(loginForm.name());
+    	//Autenticate the user and reder based on validity
         if (loginForm.hasErrors()) {
             return badRequest(login.render(loginForm));
         } else {
@@ -114,6 +125,10 @@ public class Application extends Controller {
         }
     }
 
+    /**
+     * Log out action which
+     * @return
+     */
     public static Result logout() {
         session().clear();
         flash("success", "You've been logged out");
@@ -122,6 +137,12 @@ public class Application extends Controller {
         );
     }
     
+    /**
+     * The inner class for Login form
+     * 
+     * Only 2 fields are mandatory, email and password
+     *
+     */
     public static class Login {
 
     	@Constraints.Required

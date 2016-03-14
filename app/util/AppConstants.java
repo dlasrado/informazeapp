@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import scala.concurrent.duration.Duration;
@@ -30,4 +32,12 @@ public interface AppConstants {
     
     public static final String 		X_REQUEST_TYPE = "CLIENT_REQUEST_TYPE";
     public static final String 		WEB_CLIENT = "WEB"; 
+    public static final Integer		PAGE_SIZE = 20;
+    
+	public static final String MESSAGE 		= "feed";
+	public static final String PHOTO 		= "photos";
+	public static final String VIDEO 		= "videos";
+	
+	public static final List<String> ALLOWED_POSTS = Arrays.asList(new String[]{MESSAGE,PHOTO,VIDEO});;
+	
 }

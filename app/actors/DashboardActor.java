@@ -26,31 +26,29 @@ public class DashboardActor extends UntypedActor {
 	@Override
 	public void onReceive(Object message) throws Exception {
 		
-
-			
-			Configuration config = Play.application().configuration();
-			
-			try {
-			
-				FacebookClient facebookClient = new DefaultFacebookClient(Utility.getAppAccessToken().getAccessToken());
-		        Page page = facebookClient.fetchObject(config.getString("fb.page.name"), Page.class);
-		        Connection<Post> posts = facebookClient.fetchConnection(config.getString("fb.page.name")+"/feed", Post.class);
+		Configuration config = Play.application().configuration();
 		
-		        Logger.info("Total posts : "+posts.getData().size());
-		        Logger.info("Total posts : "+posts.getTotalCount());
-		        Logger.info("Total likes : "+page.getLikes());
-		        ObjectNode result = new JsonNodeFactory(true).objectNode();
-		        result.put("total_posts", posts.getData().size());
-		        result.put("total_likes", page.getLikes()==null?0L:page.getLikes());
-		        result.put("total_checkins", page.getCheckins()==null?0:page.getCheckins());
-		        result.put("total_talking", page.getTalkingAboutCount()==null?0:page.getTalkingAboutCount());
-		        getSender().tell(result, getSelf());
-	            
-	        } catch (Exception e) {
-	            Logger.error("Error in configuration", e);
-	            getSender().tell(e,
-	                    getSelf());
-	        }
+		try {
+		
+			FacebookClient facebookClient = new DefaultFacebookClient(Utility.getAppAccessToken().getAccessToken());
+	        Page page = facebookClient.fetchObject(config.getString("fb.page.name"), Page.class);
+	        Connection<Post> posts = facebookClient.fetchConnection(config.getString("fb.page.name")+"/feed", Post.class);
+	
+	        Logger.info("Total posts : "+posts.getData().size());
+	        Logger.info("Total posts : "+posts.getTotalCount());
+	        Logger.info("Total likes : "+page.getLikes());
+	        ObjectNode result = new JsonNodeFactory(true).objectNode();
+	        result.put("total_posts", posts.getData().size());
+	        result.put("total_likes", page.getLikes()==null?0L:page.getLikes());
+	        result.put("total_checkins", page.getCheckins()==null?0:page.getCheckins());
+	        result.put("total_talking", page.getTalkingAboutCount()==null?0:page.getTalkingAboutCount());
+	        getSender().tell(result, getSelf());
+            
+        } catch (Exception e) {
+            Logger.error("Error in configuration", e);
+            getSender().tell(e,
+                    getSelf());
+        }
 		
 	}
 

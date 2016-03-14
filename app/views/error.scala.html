@@ -1,0 +1,16 @@
+@(json: org.json.JSONObject)
+
+@main("Infomaze") {
+	<div style="text-align:center;color:red;font-weight:bold;">
+		@if(json == null) {
+			Internal error while processing the request
+		} else {
+		 @{Html(json.getString("error"))}
+			}
+	</div>
+	
+	
+	
+	
+	
+}

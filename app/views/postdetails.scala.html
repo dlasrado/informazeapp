@@ -1,30 +1,154 @@
-@(post: com.restfb.types.Post)
+@(post: models.FacebookPosts, jsonstring: String)
 
 @main("Infomaze") {
-
-	<fieldset>
-	        <div class="pure-control-group">
-	            <label for="posttype">Post Id</label>
-	            <span>@post.getId()</span>
-	            <label for="posttype">Post Id</label>
-	            <span>@post.getId()</span>
-	         </div>
-	         <div class="pure-control-group">
-	            <label for="posttype">Message</label>
-	            <span>@post.getMessage()</span>
-	            
-	         </div>
-	         <div class="pure-control-group">
-	            <label for="posttype">Total likes</label>
-	            <span>@post.getLikesCount()</span>
-	            <label for="posttype">Total shares</label>
-	            <span>@post.getSharesCount()</span>
-	         </div>
-	         <div class="pure-control-group">
-	            <label for="posttype">Total likes</label>
-	            <span>@post.getLikesCount()</span>
-	            <label for="posttype">Total shares</label>
-	            <span>@post.getSharesCount()</span>
-	         </div>
-	 </fieldset>   
+					<div class="pure-g">
+                        <div class="pure-u-1-2">
+	                    <h3 class="page-title"> Post details</h3>
+	                    </div>
+	                    <div class="pure-u-1-2" style="text-align:right;">
+                        <small><a href="@routes.PostController.managepost()">Go to list</a></small>&nbsp;&nbsp;
+                        <small><a href="@routes.PostController.post()">Create another post</a></small>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <!-- END PAGE TITLE-->
+                    
+                    <div class="pure-g">
+                        <div class="pure-u-1-3">
+                            <div class="dashboard-stat2" style="backgroud-color:#fff">
+                               
+                                    <div >
+                                        <h3 class="font-green-sharp">
+                                            <span >@post.getLikesCount()</span>
+                                         
+                                        </h3>
+                                        <small>LIKES</small>
+                                    </div>
+                                    <div class="icon">
+                                        <img src="@routes.Assets.at("images/fblike.png")" class="icon-fb"/>
+                                    </div>
+                                </div>
+                                
+                           
+                        </div>
+                        <div class="pure-u-1-3">
+                            <div class="dashboard-stat2">
+                                
+                                    <div >
+                                        <h3 class="font-red-haze">
+                                            <span >@if(post.getComments()!=null){@post.getComments().size()}else{0}</span>
+                                        </h3>
+                                        <small>COMMENTS</small>
+                                    </div>
+                                    <div class="icon">
+                                        <img src="@routes.Assets.at("images/fbcomments.png")" class="icon-fb"/>
+                                    </div>
+                                </div>
+                               
+                            
+                        </div>
+                        <div class="pure-u-1-3">
+                            <div class="dashboard-stat2">
+                               
+                                    <div >
+                                        <h3 class="font-blue-sharp">
+                                            <span >@post.getSharesCount()</span>
+                                        </h3>
+                                        <small>SHARES</small>
+                                    </div>
+                                    <div class="icon">
+                                        <img src="@routes.Assets.at("images/fbshare.png")" class="icon-fb"/>
+                                    </div>
+                                
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="pure-g">
+                        <div class="pure-u-1-2">
+                            <div class="dashboard-stat2" style="min-height:250px;">
+                                <div class="pure-g">
+                                    <div class="pure-u-1-2">
+                                        <h2 class="bold uppercase">Message</h2>
+                                    </div>
+                                    <div class="pure-u-1-2" style="text-align:right;">
+                                        <script>
+                                        var jsonpost = @{Html(jsonstring)};
+                                        if (jsonpost.published == "false") {
+                                        	document.write("<small><a href='/publish/@post.getPostId()'>Publish now</a></small>");
+                                        }
+                                        </script>
+                                       
+                                    </div>
+                                    
+                                </div>
+                                <div class="portlet-body">
+                                	@if(post.getName() != null) {
+                                    	@post.getName()
+									} else {
+										@post.getMessage()
+									}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pure-u-1-2">
+                            <div class="dashboard-stat2" style="min-height:250px;">
+                                <div class="portlet-title">
+                                    <div class="caption font-green">
+                                        <h2 class="bold uppercase">Media</h2>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                <div class="portlet-body">
+                                	@if(post.getPicture() != null) {
+                                    	<img src="@post.getPicture()" style="height:150px;width:150px">
+									}
+									@if(post.getSource() != null) {
+									<video width="320" height="180" controls>
+									  <source src="@{Html(post.getSource())}" >
+									  Your browser does not support the video tag.
+									</video>
+                                    	
+									}
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    <div class="pure-g">
+                        <div class="pure-u-1-2">
+                            <div class="dashboard-stat2" style="min-height:200px;">
+                                <div class="portlet-title">
+                                    <div class="caption font-green">
+                                        <h2 class="bold uppercase">Comments</h2>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                <div class="portlet-body">
+                                    @if(post.getComments()!=null) {
+                                    	<div style="width:100%;height:150px;overflow:scroll;">
+                                    	@for(comment <- post.getComments()) {
+                                    		<span style="padding-bottom:10px">@comment.getMessage()</span>
+                                    	}
+                                    	</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pure-u-1-2">
+                            <div class="dashboard-stat2" style="min-height:200px;">
+                                <div class="portlet-title">
+                                    <div class="caption font-green">
+                                        <h2 class="bold uppercase">Description</h2>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                <div class="portlet-body">
+                                    @post.getDescription()
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
 }

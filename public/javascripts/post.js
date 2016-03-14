@@ -9,11 +9,11 @@
     
     
     posttypeselect.onchange = function(e) {
-    	if(this.value == "event") {
+    	if(this.value == "events") {
     	
     		document.getElementById('eventschedule').hidden = false;
     		document.getElementById('filepicker').hidden = true;
-    	} else if(this.value == "photo") {
+    	} else if(this.value == "photos" || this.value == "videos") {
     	
     		document.getElementById('eventschedule').hidden = true;
     		document.getElementById('filepicker').hidden = false;

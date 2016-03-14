@@ -1,9 +1,21 @@
 @(json: com.fasterxml.jackson.databind.JsonNode)
 
 @main("Infomaze") {
-	<div style="text-align:right;font-weight:bold">Total @json.get("totalrecords") records found</div>
-	
-	<table class="pure-table pure-table-horizontal">
+	<div style="text-align:right;font-weight:bold">@json.get("startrec") to @json.get("endrec") of @json.get("totalrecords") records</div>
+	<div style="text-align:right;">
+		<ul class="pagination">
+		  <li><a href="#">Pages</a></li> 
+		  <script>
+		  	var totpage  = @json.get("totalrecords") / 20;
+		  	for (var i=totpage;i>=0;i=i-1) {
+		  		document.write('<li><a href="/managepost?p='+(totpage-i+1)+'">'+(totpage-i+1)+'</a></li>');
+		  	}
+		  </script>
+		  
+		  <!-- <li><a href="#">»</a></li> -->
+		</ul>
+	</div>
+	<table class="pure-table pure-table-horizontal" style="width:100%">
     <thead>
         <tr>
             <th>Post Id</th>
@@ -18,15 +30,22 @@
     <script>
     	var recs = @{Html(json.get("records").toString())};
     	
+		function formatDate(now) {
+			var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+			var formattedDate = now.getDate()+" "+months[now.getMonth()-1]+" "+now.getFullYear() +" "+ now.getHours()+":"+ now.getMinutes();
+			return formattedDate;
+		}
     	var htmlString = "";
     	for(var i=0;i<recs.length;i++) {
     		var record = JSON.parse(recs[i]);
+    		var msg = record.message;
+    		if(msg.length > 200){msg=msg.substring(0,200)+"...";}
     		
     		htmlString += "<tr><td><a href='/postdetails/"+record._id+"'>"+record._id+"</a></td>";
     		htmlString += "<td>"+(record.published=='true'?'Yes':'No')+"</td>";
-    		htmlString += "<td>"+(typeof(record.published_date)!="undefined"?(new Date(record.published_date.$date)):"")+"</td>";
-    		htmlString += "<td>"+record.message+"</td>";
-    		htmlString += "<td>"+(new Date(record.created_date.$date))+"</td></tr>";
+    		htmlString += "<td>"+(typeof(record.published_date)!="undefined"?(formatDate(new Date(record.published_date.$date))):"")+"</td>";
+    		htmlString += "<td>"+msg+"</td>";
+    		htmlString += "<td>"+(formatDate(new Date(record.created_date.$date)))+"</td></tr>";
     	}
     	document.write(htmlString);
     </script>

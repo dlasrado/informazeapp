@@ -3,8 +3,10 @@
  */
 package models;
 
-import java.io.File;
 import java.util.Date;
+import java.util.List;
+
+import com.restfb.types.Comment;
 
 /**
  * @author dlasrado
@@ -15,9 +17,17 @@ public class FacebookPosts {
 	private String postType;
 	private String message;
 	private String name;
-	private Date start_time;
-	private Date end_time;
-	private File attachment;
+	private Date created_time;
+	private String embedHTML;
+	private String picture;
+	private Long likesCount = 0L;
+	private Long sharesCount = 0L;
+	private int commentsCount = 0;
+	private List<Comment> comments;
+	private String postId;
+	private String description;
+	private String source;
+
 	/**
 	 * @return the postType
 	 */
@@ -55,40 +65,128 @@ public class FacebookPosts {
 		this.name = name;
 	}
 	/**
-	 * @return the start_time
+	 * @return the created_time
 	 */
-	public Date getStart_time() {
-		return start_time;
+	public Date getCreated_time() {
+		return created_time;
 	}
 	/**
-	 * @param start_time the start_time to set
+	 * @param created_time the created_time to set
 	 */
-	public void setStart_time(Date start_time) {
-		this.start_time = start_time;
+	public void setCreated_time(Date created_time) {
+		this.created_time = created_time;
 	}
 	/**
-	 * @return the end_time
+	 * @return the embedURL
 	 */
-	public Date getEnd_time() {
-		return end_time;
+	public String getEmbedHTML() {
+		return embedHTML;
 	}
 	/**
-	 * @param end_time the end_time to set
+	 * @param embedURL the embedURL to set
 	 */
-	public void setEnd_time(Date end_time) {
-		this.end_time = end_time;
+	public void setEmbedHTML(String embedHTML) {
+		this.embedHTML = embedHTML;
 	}
 	/**
-	 * @return the attachment
+	 * @return the picture
 	 */
-	public File getAttachment() {
-		return attachment;
+	public String getPicture() {
+		return picture;
 	}
 	/**
-	 * @param attachment the attachment to set
+	 * @param picture the picture to set
 	 */
-	public void setAttachment(File attachment) {
-		this.attachment = attachment;
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+	/**
+	 * @return the likeCount
+	 */
+	public Long getLikesCount() {
+		return likesCount;
+	}
+	/**
+	 * @param likeCount the likeCount to set
+	 */
+	public void setLikesCount(Long likeCount) {
+		if(likeCount == null)
+			likeCount = 0L;
+		this.likesCount = likeCount;
+	}
+	/**
+	 * @return the shareCount
+	 */
+	public Long getSharesCount() {
+		return sharesCount;
+	}
+	/**
+	 * @param shareCount the shareCount to set
+	 */
+	public void setSharesCount(Long shareCount) {
+		if(shareCount == null)
+			shareCount = 0L;
+		this.sharesCount = shareCount;
+	}
+	/**
+	 * @return the commentsCount
+	 */
+	public int getCommentsCount() {
+		return commentsCount;
+	}
+	/**
+	 * @param commentsCount the commentsCount to set
+	 */
+	public void setCommentsCount(int commentsCount) {
+		this.commentsCount = commentsCount;
+	}
+	/**
+	 * @return the comments
+	 */
+	public List<Comment> getComments() {
+		return comments;
+	}
+	/**
+	 * @param comments the comments to set
+	 */
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	/**
+	 * @return the postId
+	 */
+	public String getPostId() {
+		return postId;
+	}
+	/**
+	 * @param postId the postId to set
+	 */
+	public void setPostId(String postId) {
+		this.postId = postId;
+	}
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	/**
+	 * @return the source
+	 */
+	public String getSource() {
+		return source;
+	}
+	/**
+	 * @param source the source to set
+	 */
+	public void setSource(String source) {
+		this.source = source;
 	}
 	
 }

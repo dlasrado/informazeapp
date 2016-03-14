@@ -15,7 +15,7 @@ $.fn.serializeObject = function()
     return o;
 };
 
-$(function() { 
+/*$(function() { 
     $('form').submit(function() {
         //$('#result').text(JSON.stringify($('form').serializeObject()));
         
@@ -25,17 +25,22 @@ $(function() {
                 json = JSON.parse(xhr.responseText);
                 if(json.error!=null)
                 	document.getElementById('errormessage').innerHTML = json.error;
-                else if(json.message!=null)
+                else if(json.post_id!=null) {
+                	//if(json.message!=null)
+                	window.location.href = "/postdetails/"+json.post_id;
+                } else if(json.message!=null)
                 	document.getElementById('errormessage').innerHTML = json.message;
             }
         }
         xhr.open(postForm.method, postForm.action, true);
         xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-        var message = xhr.send(JSON.stringify($('form').serializeObject()));
+        var formData = $('form').serializeObject();
+        formData['filedata1'] = document.getElementById('filedata'); 
+        var message = xhr.send(JSON.stringify(formData));
         
         return false;
     });
-});
+});*/
 
 (function (window, document) {
 
@@ -73,5 +78,4 @@ $(function() {
     
     
 }(this, this.document));
-
 

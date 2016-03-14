@@ -1,9 +1,24 @@
 body  
 {  
-    font-family: "lucida grande", tahoma, verdana, arial, sans-serif;  
+    font-family: "lucida grande", tahoma, verdana, arial, sans-serif; 
+    background-color: #F7F7F7;
 }  
 #ui-datepicker-div {display: none;}
  
+.dashboard-stat2 {
+    border-radius: 4px;
+    background: #fff;
+    padding: 15px 15px 30px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.icon {
+    display: inline-block;
+    float: right;
+    padding: 7px 0 0;
+}
+
 
 /* Default Facebook CSS */  
 .fbbody  
@@ -88,3 +103,30 @@ body
     color: #ffffff;  
     cursor: hand;  
 }  
+
+.icon-fb{
+    content: '';
+    display: block;
+    height: 80px;  /*height of icon */
+    width: 80px;  /*width of icon */
+    position: relative;
+      /*where to replace the icon */
+    top: -80px;
+    left: -10px;
+      
+}
+
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination li {display: inline;}
+
+ul.pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
