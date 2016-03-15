@@ -1,22 +1,13 @@
-Sample Facebook Canvas Application using Play Framework and restfb
+Sample Facebook Admin Application using Play Framework and restfb
 ==================================================================
 
-+   Play Framework v.2.3.4
-+   restfb v.1.6.16
-+   Facebook Javascript SDK
++   Play Framework v.2.5
++   restfb v.1.19.0
++   PureCSS
++ 	MongoDB 3.2
 
-Configuration
-============
+This application allows you to create 3 types of posts (status messages, photos and videos).
+You can create unpublished posts, scheduled posts or publish them immediately.
+The posts created can be managed using a tabular list. The manage options include delete, publish unpublished and view details.
 
-Modify **appID** and replace it with your appID ( File: **app/views/index.scala.html**)
-
-            FB.init ( {
-                appId : '699976683425267',
-                xfbml : true,
-                version : 'v2.1'
-            } ) ;
-
-Demo:
-=====
-
-Available at: https://apps.facebook.com/699976683425267/
+The application enables basic authentication (login and logout) 
