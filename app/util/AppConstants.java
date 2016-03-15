@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import play.api.i18n.Lang;
 import scala.concurrent.duration.Duration;
 import akka.util.Timeout;
 
@@ -17,6 +18,8 @@ public interface AppConstants {
 	public static final String       APPLICATION_JSON    = "application/json";
 	public static final String       APPLICATION_PDF    = "application/pdf";
 	public static final String       APPLICATION_XLS    = "application/vnd.ms-excel";
+	
+	public static Lang 				lang 				= new Lang("en", "us");
 	
 	public static final Timeout     TIMEOUT             = new Timeout(
             Duration.create(

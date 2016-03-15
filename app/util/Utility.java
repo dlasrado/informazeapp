@@ -19,13 +19,11 @@ import play.Logger;
 import play.Play;
 import play.api.libs.Crypto;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.Block;
 import com.mongodb.client.FindIterable;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient.AccessToken;
+import com.restfb.Version;
 
 /**
  * A general Utility class
@@ -61,7 +59,7 @@ public class Utility {
     				&& (new Date(System.currentTimeMillis()-5000)).before(appAccessToken.getExpires()))) {
    	
 	    	appAccessToken =
-	  			  new DefaultFacebookClient().obtainAppAccessToken(config.getString("fb.app.id"), 
+	  			  new DefaultFacebookClient(Version.VERSION_2_5).obtainAppAccessToken(config.getString("fb.app.id"), 
 	  					  Crypto.decryptAES(config.getString("fb.app.secret")));
     	}
     	

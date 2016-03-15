@@ -3,29 +3,23 @@
  */
 package controllers;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.net.UnknownHostException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.bson.BsonDocument;
+import models.FacebookPosts;
+
 import org.bson.Document;
-import org.bson.codecs.BsonValueCodec;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import models.FacebookPosts;
 import play.Configuration;
 import play.Logger;
 import play.Play;
-import play.api.i18n.Lang;
-import play.api.libs.json.JsArray;
 import play.libs.Crypto;
 import play.libs.Json;
 import play.mvc.BodyParser;
@@ -38,28 +32,20 @@ import util.MongoConnect;
 import util.Utility;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.mongodb.Block;
-import com.mongodb.QueryBuilder;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import com.restfb.BinaryAttachment;
-import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
+import com.restfb.Version;
 import com.restfb.exception.FacebookOAuthException;
-import com.restfb.json.JsonArray;
 import com.restfb.json.JsonObject;
 import com.restfb.types.FacebookType;
-import com.restfb.types.Message;
 import com.restfb.types.NamedFacebookType;
-import com.restfb.types.Page;
 import com.restfb.types.Photo;
 import com.restfb.types.Post;
 import com.restfb.types.Video;
-import com.restfb.util.StringUtils;
 
 /**
  * The controller for all post related actions
@@ -70,8 +56,7 @@ import com.restfb.util.StringUtils;
 public class PostController extends Application {
 
 	private static Configuration config = Play.application().configuration();
-	private static final int    TIMEOUT_IN_MILLIS = 60000;
-	private static Lang lang = new Lang("en", "us");
+
 	
 	
     /**
@@ -117,7 +102,7 @@ public class PostController extends Application {
 			
 			//Logger.debug("access to ken is :"+Crypto.encryptAES("CAARsz0jLG0YBANP0flzyXsg8uG0LB2xJLw43gQc7HBuzGdNFh76gZCZCXZAt5At6VcSz2RroVyCuX3ZBk66nscKXo5rRZBiHq97GwPq6KsDJ7OCAFkhQhZBzOVjC3u4Bsp2SCazylrJCTdtFVAkKxW4nsWC6J3qUWWf3sDQLnTOOeezkIJxq7FVXZAIlQrZBZAMQZD"));
 			FacebookClient facebookClient = new DefaultFacebookClient(
-					Crypto.decryptAES(config.getString("fb.access.token")));
+					Crypto.decryptAES(config.getString("fb.access.token")), Version.VERSION_2_5);
 			//facebookClient.
 			FacebookType publishMessageResponse = null;			
 			
@@ -155,13 +140,10 @@ public class PostController extends Application {
 	 * @return
 	 */
 	@Security.Authenticated(Secured.class)
-	@BodyParser.Of(BodyParser.Json.class)
     public static Result posts() {
-
-		JsonNode jsonBody = request().body().asJson();
 		
 		FacebookClient facebookClient = new DefaultFacebookClient(
-				Utility.getAppAccessToken().getAccessToken());
+				Utility.getAppAccessToken().getAccessToken(), Version.VERSION_2_5);
 		
 		JsonObject feeds = facebookClient.fetchObject(config.getString("fb.page.name")+"/feed", 
 				JsonObject.class);
@@ -182,7 +164,7 @@ public class PostController extends Application {
     public static Result publish(String post_id) {
 	
 		FacebookClient facebookClient = new DefaultFacebookClient(
-				Crypto.decryptAES(config.getString("fb.access.token")));
+				Crypto.decryptAES(config.getString("fb.access.token")), Version.VERSION_2_5);
 		
 		JsonObject publishMessageResponse = facebookClient.publish(post_id, com.restfb.json.JsonObject.class,
 				Parameter.with("is_published", "true"));
@@ -284,7 +266,7 @@ public class PostController extends Application {
         String postType = result.first().getString("post_type");
         
         FacebookClient facebookClient = new DefaultFacebookClient(
-        		Crypto.decryptAES(config.getString("fb.access.token")));
+        		Crypto.decryptAES(config.getString("fb.access.token")), Version.VERSION_2_5);
         //Page page = facebookClient.fetchObject(config.getString("fb.page.id")+"/"+ postType, Page.class);
         
         FacebookPosts fbPost = null;
@@ -325,7 +307,7 @@ public class PostController extends Application {
     public static Result deletepost(String post_id) {
 	
 		FacebookClient facebookClient = new DefaultFacebookClient(
-				Crypto.decryptAES(config.getString("fb.access.token")));
+				Crypto.decryptAES(config.getString("fb.access.token")), Version.VERSION_2_5);
 		
 		boolean status = facebookClient.deleteObject(post_id, 
 				Parameter.with("post_id", post_id));

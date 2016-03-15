@@ -1,14 +1,10 @@
 package controllers;
 
 import static play.data.Form.form;
-
-import java.util.Date;
-
 import play.Configuration;
 import play.Logger;
 import play.Play;
 import play.api.i18n.Lang;
-import play.api.libs.Crypto;
 import play.data.Form;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
@@ -25,7 +21,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
-import com.restfb.FacebookClient.AccessToken;
+import com.restfb.Version;
 import com.restfb.types.Page;
 import com.restfb.types.Post;
 
@@ -37,7 +33,7 @@ import com.restfb.types.Post;
 public class Application extends Controller {
 
 	private static Configuration config = Play.application().configuration();
-	private static Lang lang = new Lang("en", "us");
+	
 	
 	/**
 	 * The root access
@@ -67,7 +63,7 @@ public class Application extends Controller {
     		(AppConstants.WEB_CLIENT.equals(requestType)?true:false);
         
     	FacebookClient facebookClient = new DefaultFacebookClient(
-    			Utility.getAppAccessToken().getAccessToken());
+    			Utility.getAppAccessToken().getAccessToken(), Version.VERSION_2_5);
     	//Get page object
         Page page = facebookClient.fetchObject(
         		config.getString("fb.page.name"), Page.class);
