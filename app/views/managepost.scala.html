@@ -12,40 +12,49 @@
 		  	}
 		  </script>
 		  
-		  <!-- <li><a href="#">»</a></li> -->
+		  <!-- <li><a href="#">ï¿½</a></li> -->
 		</ul>
 	</div>
 	<table class="pure-table pure-table-horizontal" style="width:100%">
     <thead>
         <tr>
             <th>Post Id</th>
-            <th>Published?</th>
+            <th>Published</th>
             <th>Published Date</th>
             <th>Message</th>
             <th>Created Date</th>
+            <th>Action</th>
         </tr>
     </thead>
 
     <tbody>
     <script>
     	var recs = @{Html(json.get("records").toString())};
-    	
-		function formatDate(now) {
-			var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-			var formattedDate = now.getDate()+" "+months[now.getMonth()-1]+" "+now.getFullYear() +" "+ now.getHours()+":"+ now.getMinutes();
-			return formattedDate;
-		}
+    	function deletePost(id) {
+    	  if(confirm("Are you sure you want to delete this post?")) {
+    	  	  loading();
+			  $.ajax({
+			   type: "DELETE",
+			   url: "/post/" + id,
+			   success: function(msg){
+			        window.location.reload(true);
+			    }		   
+			 });
+		  }
+    	}
+		
     	var htmlString = "";
     	for(var i=0;i<recs.length;i++) {
     		var record = JSON.parse(recs[i]);
     		var msg = record.message;
     		if(msg.length > 200){msg=msg.substring(0,200)+"...";}
-    		
+    		//if(typeof(record.scheduled_publish_time)!="undefined") {alert(record.scheduled_publish_time);alert(new Date(getFullDateTime(record.scheduled_publish_time))); alert(formatDate(new Date(record.scheduled_publish_time)));}
     		htmlString += "<tr><td><a href='/postdetails/"+record._id+"'>"+record._id+"</a></td>";
     		htmlString += "<td>"+(record.published=='true'?'Yes':'No')+"</td>";
-    		htmlString += "<td>"+(typeof(record.published_date)!="undefined"?(formatDate(new Date(record.published_date.$date))):"")+"</td>";
+    		htmlString += "<td>"+(typeof(record.published_date)!="undefined"?(formatDate(new Date(record.published_date.$date))):(typeof(record.scheduled_publish_time)!="undefined"?("("+formatDate(new Date(getFullDateTime(record.scheduled_publish_time))))+")":""))+"</td>";
     		htmlString += "<td>"+msg+"</td>";
-    		htmlString += "<td>"+(formatDate(new Date(record.created_date.$date)))+"</td></tr>";
+    		htmlString += "<td>"+(formatDate(new Date(record.created_date.$date)))+"</td>";
+    		htmlString += "<td><a href='#' onclick='deletePost(\""+record._id+"\")'>Delete</a></td></tr>";
     	}
     	document.write(htmlString);
     </script>

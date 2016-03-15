@@ -5,7 +5,7 @@
     @helper.form(routes.PostController.post, 'id -> "postForm", 'class->"pure-form pure-form-aligned", 'enctype->"multipart/form-data", 'method->"post") {
 		
 		<div class="pure-controls"><label></label>
-		        <label id="errormessage" style="font-weight:bold">@json.get("error")</label>
+		        <label id="errormessage" style="font-weight:bold">@json.get("error")&nbsp;</label>
 		    </div>
 		<fieldset>
 	        <div class="pure-control-group">
@@ -20,7 +20,7 @@
 	
 	        <div class="pure-control-group">
 	            <label for="message">Message</label>
-	            <textarea class="pure-input-1-2" name="message" placeholder="Message or Event name or Status"  required></textarea>
+	            <textarea class="pure-input-1-2" name="message" id="message" placeholder="Message or Event name or Status"  required></textarea>
 	        </div>
 	
 			<div class="pure-control-group">
@@ -41,14 +41,7 @@
 			        <input id="scheduledate" name="scheduledate" type="text" placeholder="Specify date" disabled>
 			       <select id="scheduletime" name="scheduletime" >
 			       		<script>
-						       		function zeroFill( number, width ) {
-									  width -= number.toString().length;
-									  if ( width > 0 )
-									  {
-									    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
-									  }
-									  return number + ""; // always return a string
-									}
+						       		
 			       			var htmlstr = "";
 			       			for(var i=0;i<24;i++) {
 			       				var hrVal = zeroFill(i, 2);

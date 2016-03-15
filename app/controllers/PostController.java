@@ -179,7 +179,6 @@ public class PostController extends Application {
 	 * @return JSON resut
 	 */
 	@Security.Authenticated(Secured.class)
-	@BodyParser.Of(BodyParser.Json.class)
     public static Result publish(String post_id) {
 	
 		FacebookClient facebookClient = new DefaultFacebookClient(
@@ -235,8 +234,8 @@ public class PostController extends Application {
 		try {
 			MongoDatabase db = new MongoConnect().getDB();
 			FindIterable<Document> result = db.getCollection("posts")
-					.find().sort(new Document("created_date", -1)).skip(skip).limit(limit);
-			long count = db.getCollection("posts").count();
+					.find(new Document("status", new Document("$ne","DELETED"))).sort(new Document("created_date", -1)).skip(skip).limit(limit);
+			long count = db.getCollection("posts").count(new Document("status", new Document("$ne","DELETED")));
 			
 			
 			response.put("totalrecords", count);
@@ -316,6 +315,41 @@ public class PostController extends Application {
         
 	}
 	
+	/**
+	 * deletes the given post_id
+	 *  
+	 * @param post_id : Facebook unique Id for the post
+	 * @return Result
+	 */
+	@Security.Authenticated(Secured.class)
+    public static Result deletepost(String post_id) {
+	
+		FacebookClient facebookClient = new DefaultFacebookClient(
+				Crypto.decryptAES(config.getString("fb.access.token")));
+		
+		boolean status = facebookClient.deleteObject(post_id, 
+				Parameter.with("post_id", post_id));
+        
+		Logger.info("The result of deleting the post : "+ status);
+		
+		if (status) {
+			try {
+				MongoDatabase db = new MongoConnect().getDB();
+				db.getCollection("posts").updateOne(new Document("_id",post_id), 
+						new Document("$set",new Document("status","DELETED").append("deleted_date", new Date())));
+			} catch (UnknownHostException e) {
+				Logger.error("Mongodb host not found", e);
+				return ok(views.html.error.render(Utility.getErrorJson("Mongodb host not found :"+
+						e.getMessage())));
+			}
+			JsonNode json = play.libs.Json.parse("{\"message\":\"success\"}");
+			return ok(json);
+		} else {
+			JsonNode json = play.libs.Json.parse("{\"message\":\"failed\"}");
+			return ok(json);
+		}
+		
+	}
 	/*
 	 * The helper method to return a list of parameter for the post call.
 	 * The input is formURLEncoded fields submitted from the UI
@@ -372,6 +406,7 @@ public class PostController extends Application {
 		json.put("_id", response.getId());
 		
 		json.put("created_date", new Date());
+		json.put("status", "ACTIVE");
 		
 		if (json.get("published") == null || "true".equals(json.get("published"))) {
 			json.put("published", "true");
